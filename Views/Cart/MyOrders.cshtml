@@ -1,0 +1,153 @@
+﻿@model IEnumerable<Project.Models.Order>
+
+@{
+    ViewBag.Title = "My Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Container and table styling */
+    .container {
+        margin-top: 3rem;
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+        .table thead th {
+            background-color: #6c757d;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+
+        .table tbody td {
+            text-align: center;
+            padding: 12px;
+            vertical-align: middle;
+            border: 1px solid #dee2e6;
+        }
+
+    /* Styling for Order Items list */
+    .order-items-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .order-items-list li {
+            padding: 8px 12px;
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: 14px;
+        }
+
+            .order-items-list li:last-child {
+                margin-bottom: 0;
+            }
+
+    /* Button styling */
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: #fff;
+        font-weight: 500;
+    }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+    .btn-danger[disabled] {
+        background-color: #d6d6d6;
+        border-color: #d6d6d6;
+        cursor: not-allowed;
+    }
+</style>
+
+<div class="container">
+    <h2 class="text-center mb-4">My Orders</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">You have not placed any orders yet.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Items</th>
+                        <th>Order Date</th>
+                        <th>Total Amount</th>
+                        <th>Payment Method</th>
+                        <th>Details</th>
+                        <th>Action</th> <!-- New column for action buttons -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>
+                                @if (order.OrderItems != null && order.OrderItems.Any())
+                                {
+                                    <ul class="order-items-list">
+                                        @foreach (var item in order.OrderItems)
+                                        {
+                                            <li>@item.Product.ProductName</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <span>No items</span>
+                                }
+                            </td>
+                            <td>@order.OrderDate</td>
+                            <td>₹@order.TotalAmount</td>
+                            <td>@order.PaymentMethod</td>
+                            <td>
+                                <a href="@Url.Action("OrderDetails", "Cart", new { orderId = order.OrderId })" class="btn btn-info btn-sm">
+                                    View Details
+                                </a>
+                            </td>
+
+                            <td>
+                                <!-- Cancel Order Button with condition to disable if OrderStatus is Cancel -->
+                                <form method="post" action="@Url.Action("CancelOrder", "Cart")">
+                                    <input type="hidden" name="orderId" value="@order.OrderId" />
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            @(order.Status == "Canceled" ? "disabled" : "")>
+                                        Cancel Order
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

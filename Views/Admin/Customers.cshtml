@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Project.Models.Customer>
+@{
+    ViewBag.Title = "Customers List";
+}
+
+<h2 class="text-center">Customers List</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <a href="@Url.Action("GenerateCustomerReport", "Admin")" class="btn btn-info"><i class="fa fa-download"></i> Download Customer Report</a>
+    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="fa fa-filter"></i> Filter</button>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="filterModalLabel">Filter Customers</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="get" action="@Url.Action("FilterCustomer", "Admin")">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="FullName" class="form-label">Full Name</label>
+                            <input type="text" id="FullName" name="FullName" value="@ViewBag.FullName" class="form-control" placeholder="Enter or select full name" list="fullNameList" />
+                            <datalist id="fullNameList">
+                                @foreach (var customer in Model)
+                                {
+                                    <option value="@customer.FullName" />
+                                }
+                            </datalist>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input type="email" id="Email" name="Email" value="@ViewBag.Email" class="form-control" placeholder="Enter or select email" list="emailList" />
+                            <datalist id="emailList">
+                                @foreach (var customer in Model)
+                                {
+                                    <option value="@customer.Email" />
+                                }
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="PhoneNumber" class="form-label">Phone Number</label>
+                            <input type="text" id="PhoneNumber" name="PhoneNumber" value="@ViewBag.PhoneNumber" class="form-control" placeholder="Enter or select phone number" list="phoneList" />
+                            <datalist id="phoneList">
+                                @foreach (var customer in Model)
+                                {
+                                    <option value="@customer.PhoneNumber" />
+                                }
+                            </datalist>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="Address" class="form-label">Address</label>
+                            <input type="text" id="Address" name="Address" value="@ViewBag.Address" class="form-control" placeholder="Enter or select address" list="addressList" />
+                            <datalist id="addressList">
+                                @foreach (var customer in Model)
+                                {
+                                    <option value="@customer.Address" />
+                                }
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Apply Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table for displaying customers -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered align-middle text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Customer ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@customer.CustomerID</td>
+                    <td>@customer.FullName</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.PhoneNumber</td>
+                    <td>@customer.CreatedAt</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Additional Styling for Consistent Layout -->
+<style>
+    h2 {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table thead {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .modal-header {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+    .modal-title {
+        color: #333;
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    .btn-info, .btn-warning {
+        color: white;
+    }
+</style>

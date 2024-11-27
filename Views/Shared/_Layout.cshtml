@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - Budget Buyers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMJ6smuKxfJDo6RaDjdLgXU/2XJ5COZj5pOXqgq"
+          crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-navbar {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .brand-name {
+            font-weight: bold;
+            font-size: 24px;
+            color: #ffc107;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #ffc107 !important;
+            }
+
+        .search-bar {
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+            .search-bar input {
+                border: none;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .search-bar button {
+                border: none;
+                background-color: #ffc107;
+                border-radius: 0 25px 25px 0;
+                padding: 0.5rem 1rem;
+            }
+
+        .footer {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 2rem 0;
+        }
+
+            .footer a {
+                color: #ffffff;
+            }
+
+                .footer a:hover {
+                    color: #ffc107;
+                }
+
+            .footer hr {
+                border-color: #ffc107;
+            }
+
+        .social-icons a {
+            margin: 0 10px;
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 5rem 0;
+        }
+
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .btn-light {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: rgba(0, 123, 255, 0.8);
+            border: none;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-navbar shadow-sm">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 col-6 mt-3 my-auto">
+                    <h5 class="brand-name">BUDGET BUYS<a href="~/Views/Home/Index.cshtml"></a></h5>
+                </div>
+
+                <div class="col-md-5 col-6 my-auto">
+                    <form role="search" method="get" action="@Url.Action("Search", "Product")" class="search-bar">
+                        <div class="input-group">
+                            <input type="search" placeholder="Search your product" class="form-control" name="q" />
+                            <button class="btn" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-5 col-12 my-auto">
+                    <ul class="nav justify-content-end">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (Session["UserType"] != null && Session["UserType"].ToString() == "Admin")
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-user"></i> @Session["UserName"]
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else if (Session["UserType"] != null && Session["UserType"].ToString() == "Seller")
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-user"></i> @Session["UserName"]
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Action("UpdateSellerProfile", "Account")">
+                                                <i class="fas fa-user-edit"></i> Update Profile
+                                            </a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="@Url.Action("myOrders", "Cart")">
+                                        <i class="fa fa-shopping-bag"></i> myOrders
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="@Url.Action("myCart", "Cart")">
+                                        <i class="fa fa-shopping-cart"></i> Cart
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-user"></i> @Session["UserName"]
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="@Url.Action("UpdateProfile", "Account")"><i class="fas fa-user-edit"></i> Update Profile</a></li>
+                                        <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="@Url.Action("Login", "Account")"><i class="fa fa-sign-in"></i> Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="@Url.Action("Register", "Account")"><i class="fa fa-user-plus"></i> Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (Session["UserType"] != null && Session["UserType"].ToString() == "Seller")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("AddProduct", "Product")">Add Product</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("AddCategory", "Category")">Add Category</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("CategoryList", "Category")">Category List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("MyProducts", "Product")">My Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("SoldProducts", "Product")">Sold Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("OrderRevokedList", "Product")">OrderRevokedList</a>
+                                </li>
+                            }
+                            else if (Session["UserType"] != null && Session["UserType"].ToString() == "Customer")
+                            {
+                                // Display customer-specific links
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("AllCategories", "Product")">All Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("NewArrivals", "Product")">New Arrivals</a>
+                                </li>
+                            }
+                            else
+                            {
+                                // Display seller-specific
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Products", "Admin")">Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Seller", "Admin")">Sellers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Customers", "Admin")">Customers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("CategoryList", "Category")">Category List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("SoldProducts", "Product")">Sold Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("OrderRevokedList", "Product")">OrderRevokedList</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("AllCategories", "Product")">All Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("NewArrivals", "Product")">New Arrivals</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        @RenderBody()
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <section class="d-flex justify-content-between p-4" style="background-color: #6351ce;">
+            <div class="me-5">
+                <span>Get connected with us on social networks:</span>
+            </div>
+            <div class="social-icons">
+                <a href="https://www.facebook.com" class="text-white" target="_blank"><i class="fa fa-facebook"></i></a>
+                <a href="https://www.twitter.com" class="text-white" target="_blank"><i class="fa fa-twitter"></i></a>
+                <a href="https://www.google.com" class="text-white" target="_blank"><i class="fa fa-google"></i></a>
+                <a href="https://www.instagram.com" class="text-white" target="_blank"><i class="fa fa-instagram"></i></a>
+                <a href="https://www.linkedin.com" class="text-white" target="_blank"><i class="fa fa-linkedin"></i></a>
+            </div>
+        </section>
+
+        <section class="">
+            <div class="container text-center text-md-start mt-5">
+                <div class="row mt-3">
+                    <!-- Company Info -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <h6 class="text-uppercase fw-bold">Budget Buys</h6>
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #f1c40f; height: 2px;" />
+                        <p>@*Budget Buys is your one-stop shop for high-quality products at unbeatable prices. Our mission is to provide a seamless shopping experience while ensuring customer satisfaction.*@</p>
+                        <p>Join us as we bring you the best deals on a wide range of products!</p>
+                    </div>
+
+                    <!-- Products Links -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <h6 class="text-uppercase fw-bold">Categories</h6>
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #f1c40f; height: 2px;" />
+                        <p><a href="~/Product/AllCategories" class="text-white">Electronics</a></p>
+                        <p><a href="~/Product/AllCategories" class="text-white">Fashion</a></p>
+                        <p><a href="~/Product/AllCategories" class="text-white">Home & Kitchen</a></p>
+                        <p><a href="~/Product/AllCategories" class="text-white">Sports</a></p>
+                    </div>
+                    <!-- Useful Links -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <h6 class="text-uppercase fw-bold">Support & Info</h6>
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #f1c40f; height: 2px;" />
+                        <p><a href="~/Home/Index" class="text-white">About Us</a></p>
+                        <p><a href="~/Footer/TermsAndCondition" class="text-white">Terms & Conditions</a></p>
+                        <p><a href="~/Footer/PrivacyPolicy" class="text-white">Privacy Policy</a></p>
+                        <p><a href="~/Footer/Help" class="text-white">Help</a></p>
+                        <p><a href="~/Footer/Contact" class="text-white">Contact Us</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            <p class="text-white m-2"> © 2024 Copyright: Budget Buys</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#searchForm').submit(function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        let searchTerm = $('#searchInput').val().trim(); // Get the search input value
+
+        if (searchTerm) {
+            $.ajax({
+                url: '@Url.Action("Search", "Product")', // The URL of your search action
+                type: 'GET',
+                data: { q: searchTerm }, // Send the search term as a query parameter
+                success: function (data) {
+                    $('#productList').html(data); // Update the product list with the search results
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error occurred: " + error); // Log any errors
+                }
+            });
+        } else {
+            // Optionally, clear the product list if the search term is empty
+            $('#productList').empty();
+        }
+    });
+});
+    </script>
+</body>
+</html>

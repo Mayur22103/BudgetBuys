@@ -1,0 +1,69 @@
+﻿@using Project.Models
+@model IEnumerable<Product>
+@{
+    ViewBag.Title = "Seller Product List";
+}
+
+<h2>Seller Product List</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <a href="@Url.Action("AddProduct", "Product")" class="btn btn-success">Add New Product</a> <!-- Button to add a new product -->
+    <a href="@Url.Action("GeneratePDFReport", "Product")" class="btn btn-info" 
+       @if (Model == null || !Model.Any()) { 
+           @:style="display:none;" 
+       }>Download PDF Report</a>
+</div>
+<br />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Image</th> <!-- Column for Product Image -->
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Product Condition</th>
+            <th>Price</th>
+            <th>Gender</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(product.ProductPhoto))
+                        {
+                            <img src="~/@Url.Content(product.ProductPhoto)" alt="@product.ProductName" style="height: 100px; width: 100px; object-fit: cover; border-radius: 50%;" /> <!-- Display the product image as rounded -->
+                        }
+                        else
+                        {
+                            <span>No Image</span> <!-- Fallback for missing images -->
+                        }
+                    </td>
+                    <td>@product.ProductName</td>
+                    <td>@product.Description</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.ProductCondition</td>
+                    <td>₹@product.Price</td>
+                    <td>@(!string.IsNullOrEmpty(product.Gender) ? product.Gender : "N/A")</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Product", new { id = product.ProductID })" class="btn btn-warning">Edit</a> <!-- Button to edit product -->
+
+                        <a href="@Url.Action("DeleteMyProduct", "Product", new { id = product.ProductID })" class="btn btn-danger"
+                           onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" class="text-center">No products available.</td> <!-- Adjusted colspan to account for the added image column -->
+            </tr>
+        }
+    </tbody>
+</table>

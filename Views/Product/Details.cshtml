@@ -1,0 +1,96 @@
+﻿@model Project.Models.Product
+
+@{
+    ViewBag.Title = "Product Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <!-- Product Image Section -->
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0 text-center">
+            <img src="~/@Model.ProductPhoto" class="img-fluid rounded shadow-lg" alt="@Model.ProductName" style="max-height: 400px; object-fit: contain; border: 2px solid #e0e0e0;" />
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="col-lg-6 col-md-12">
+            <div class="product-info">
+                <!-- Product Name -->
+                <h1 class="display-5 text-dark fw-bold mb-2">@Model.ProductName</h1>
+
+                <!-- Product Description -->
+                <h5 class="text-muted mb-2" style="font-weight: 500;">Product Description: </h5>
+                <p class="text-dark mb-3" style="font-size: 1rem; line-height: 1.6; color: #555;">@Model.Description</p>
+
+                <!-- Price and Quantity -->
+                <div class="product-meta mb-3">
+                    <!-- Price and Label in one line, no space -->
+                    <div class="d-flex align-items-center mb-2">
+                        <label for="price" class="form-label" style="font-weight: 600; color: #333; font-size: 1rem; margin-right: 5px;">Price:</label>
+                        <h5 class="text-success fw-bold" id="price" style="font-size: 1.1rem;">₹@Model.Price</h5>
+                    </div>
+
+                    <!-- Quantity and Label -->
+                    <div class="d-flex align-items-center mb-2">
+                        <label for="quantity" class="form-label" style="font-weight: 600; color: #333; font-size: 1rem; margin-right: 5px;">Stock Available:</label>
+                        <span class="badge bg-info text-dark" id="quantity" style="font-size: 1rem;">@Model.Quantity</span>
+                    </div>
+
+                    <!-- Product Condition -->
+                    <div class="d-flex align-items-center mb-2">
+                        <label for="condition" class="form-label" style="font-weight: 600; color: #333; font-size: 1rem; margin-right: 5px;">Product Condition:</label>
+                        <span class="badge @(@Model.ProductCondition == "Deadstock" ? "bg-primary" : "bg-warning") text-white" id="condition" style="font-size: 1rem;">
+                            <i class="fa @(@Model.ProductCondition == "Deadstock" ? "fa-box" : "fa-wrench") me-1"></i>@Model.ProductCondition
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Seller Information -->
+                <div class="mb-3">
+                    <h6 class="text-muted" style="font-weight: 500;">Sold by: <strong class="text-dark">@Model.SellerName</strong></h6>
+                </div>
+
+                <!-- Add to Cart Section -->
+                <form action="@Url.Action("AddToCart", "Cart", new { id = @Model.ProductID })" method="post" onsubmit="return validateQuantity(this)">
+                    <div class="d-flex align-items-center mb-3">
+                        <input type="number" name="quantity" class="form-control me-2" value="1" min="1" max="@Model.Quantity" id="quantityInput" aria-label="Quantity" style="max-width: 100px;" />
+                        <button type="submit" class="btn btn-danger text-white px-4 py-2" style="font-weight: 500;">
+                            <i class="fa fa-cart-plus me-2"></i> Add to Cart
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Back to Category Button -->
+                <a href="@Url.Action("Categories", "Product", new { category = @Model.CategoryID })" class="btn btn-outline-primary rounded-pill mt-2" style="font-weight: 500;">
+                    <i class="fa fa-arrow-left me-2"></i> Back to Category
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to Validate Quantity -->
+<script>
+    function validateQuantity(form) {
+        // Get the available quantity from the model
+        const availableQuantity = @Model.Quantity;
+
+        // Get the input quantity value
+        const inputQuantity = parseInt(form.quantity.value);
+
+        // Check if input quantity is greater than available quantity
+        if (inputQuantity > availableQuantity) {
+            alert(`You cannot add more than ${availableQuantity} items to the cart.`);
+            return false; // Prevent form submission
+        }
+
+        // Disable all buttons in the form to prevent multiple submissions
+        const buttons = form.querySelectorAll('button[type="submit"]');
+        buttons.forEach(button => {
+            button.disabled = true; // Disable the button
+            button.textContent = 'Adding...'; // Change button text for user feedback
+        });
+
+        return true; // Allow form submission
+    }
+</script>

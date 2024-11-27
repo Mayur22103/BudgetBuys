@@ -1,0 +1,95 @@
+﻿@model Project.Models.Product
+
+@{
+    ViewBag.Title = "Edit Product";
+}
+
+<h2 class="text-center mb-4">Edit Product</h2>
+
+<div class="card shadow-lg mx-auto" style="max-width: 400px; background-color: #f7f7f7; padding: 20px;">
+    <div class="card-body">
+        @using (Html.BeginForm("EditMyProduct", "Product", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => model.ProductID) <!-- Include hidden field for Product ID -->
+
+            <!-- Product Name -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ProductName, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", placeholder = "Enter product name" })
+                @Html.ValidationMessageFor(m => m.ProductName, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Product Description -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4, placeholder = "Enter product description" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Quantity -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Quantity, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", type = "number", placeholder = "Enter quantity" })
+                @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Price -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Price, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Enter price" })
+                @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Gender Dropdown -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Gender, new { @class = "form-label" })
+                <select class="form-control" id="Gender" name="Gender">
+                    <option value="Male" @(Model.Gender == "Male" ? "selected" : "")>Male</option>
+                    <option value="Female" @(Model.Gender == "Female" ? "selected" : "")>Female</option>
+                    <option value="Other" @(Model.Gender == "Other" ? "selected" : "")>Other</option>
+                </select>
+                @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Product Condition Dropdown -->
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ProductCondition, new { @class = "form-label" })
+                <select class="form-control" id="ProductCondition" name="ProductCondition">
+                    <option value="Deadstock" @(Model.ProductCondition == "Deadstock" ? "selected" : "")>Deadstock</option>
+                    <option value="Minor Defect" @(Model.ProductCondition == "Minor Defect" ? "selected" : "")>Minor Defect</option>
+                </select>
+                @Html.ValidationMessageFor(m => m.ProductCondition, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block mt-3">Save Changes</button>
+            <a href="@Url.Action("MyProducts", "Product")" class="btn btn-secondary btn-block mt-3">Cancel</a> <!-- Back to product list -->
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #e9ecef; /* Light gray background for the whole page */
+        font-family: Arial, sans-serif; /* Consistent font */
+    }
+
+    .card {
+        border-radius: 10px; /* Round the corners of the card */
+    }
+
+    .form-label {
+        font-weight: bold; /* Make labels bold */
+    }
+
+    .btn {
+        border-radius: 5px; /* Round button corners */
+    }
+
+        .btn:hover {
+            opacity: 0.9; /* Add hover effect on buttons */
+        }
+
+    .form-control {
+        border-radius: 5px; /* Round the corners of the dropdown */
+    }
+</style>

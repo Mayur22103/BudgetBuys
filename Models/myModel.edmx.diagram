@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0b13ee5ddfc24c97bcfc273d23f30b85" Name="Diagram1">
+        <EntityTypeShape EntityType="BudgetBuysModel.Customer" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BudgetBuysModel.Seller" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BudgetBuysModel.Category" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="BudgetBuysModel.Product" Width="1.5" PointX="3" PointY="4.125" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Product__Categor__5070F446" />
+        <EntityTypeShape EntityType="BudgetBuysModel.Cart" Width="1.5" PointX="5.25" PointY="2.625" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Cart__CustomerID__208CD6FA" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Cart__ProductID__1F98B2C1" />
+        <EntityTypeShape EntityType="BudgetBuysModel.Admin" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="BudgetBuysModel.Subcategory" Width="1.5" PointX="3" PointY="8.625" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Subcatego__Categ__4F47C5E3" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Product__SubCate__55009F39" />
+        <EntityTypeShape EntityType="BudgetBuysModel.OrderItem" Width="1.5" PointX="8.25" PointY="4.75" />
+        <AssociationConnector Association="BudgetBuysModel.FK__OrderItem__Produ__7D0E9093" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Categorie__Selle__078C1F06" />
+        <EntityTypeShape EntityType="BudgetBuysModel.UserAddress" Width="1.5" PointX="3" PointY="11.875" />
+        <AssociationConnector Association="BudgetBuysModel.FK__UserAddre__Custo__318258D2" />
+        <EntityTypeShape EntityType="BudgetBuysModel.Order" Width="1.5" PointX="5.25" PointY="9.75" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Order__CustomerI__4D2A7347" />
+        <AssociationConnector Association="BudgetBuysModel.FK__Order__UserId__4C364F0E" />
+        <AssociationConnector Association="BudgetBuysModel.FK__OrderItem__Order__4E1E9780" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

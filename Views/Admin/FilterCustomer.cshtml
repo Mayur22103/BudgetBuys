@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Project.Models.Customer>
+@{
+    ViewBag.Title = "Customers";
+}
+
+<div class="d-flex justify-content-between mb-3">
+    <a href="@Url.Action("Customers", "Admin")" class="btn btn-info">Back To Customers</a>
+</div>
+
+<!-- Table for displaying customers -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered align-middle text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Customer ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Address</th> <!-- Added Address Column -->
+                <th>Phone Number</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@customer.CustomerID</td>
+                    <td>@customer.FullName</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.Address</td> <!-- Display Address -->
+                    <td>@customer.PhoneNumber</td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    h2 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .table {
+        background-color: #f9f9f9;
+    }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+    .btn-group .btn {
+        margin-right: 5px;
+    }
+</style>

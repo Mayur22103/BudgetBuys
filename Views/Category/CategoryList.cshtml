@@ -1,0 +1,161 @@
+﻿@model IEnumerable<Project.Models.Category>
+
+@{
+    ViewBag.Title = "Category and Subcategory List";
+}
+
+<h2 class="text-center my-4">Categories and Subcategories</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        @if (Session["UserType"].ToString() != "Admin") // Check if user is not an admin
+        {
+            <a href="@Url.Action("AddCategory", "Category")" class="btn btn-success me-2">Add New Category</a>
+        }
+    <a href="@Url.Action("DownloadCategoryReport", "Category")" class="btn btn-info"><i class="fa fa-download"></i> Download Category Report</a>
+    </div>
+    <!-- Filter Button -->
+    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="fa fa-filter"></i> Filter</button>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="filterModalLabel">Filter Categories</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="get" action="@Url.Action("FilterCategory", "Category")">
+                    <!-- Category Name Filter -->
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input list="categoryList" class="form-control" id="categoryName" name="categoryName" value="@ViewBag.CategoryName" placeholder="Select Category" />
+                        <datalist id="categoryList">
+                            @foreach (var category in Model)
+                            {
+                                <option value="@category.CategoryName" />
+                            }
+                        </datalist>
+                    </div>
+
+                    <!-- Subcategory Filter -->
+                    <div class="mb-3">
+                        <label for="subcategoryName" class="form-label">Subcategory Name</label>
+                        <input list="subcategoryList" class="form-control" id="subcategoryName" name="subcategoryName" value="@ViewBag.SubcategoryName" placeholder="Select Subcategory" />
+                        <datalist id="subcategoryList">
+                            @foreach (var category in Model)
+                            {
+                                foreach (var subcategory in category.Subcategories)
+                                {
+                                    <option value="@subcategory.SubCategoryName" />
+                                }
+                            }
+                        </datalist>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary w-100">Apply Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Table -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered text-center align-middle">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>#</th> <!-- Index column -->
+                <th>Category Name</th>
+                <th>Subcategories</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var category = Model.ElementAt(i);
+                <tr>
+                    <td>@(i + 1)</td> <!-- Display the index number -->
+                    <td>@category.CategoryName</td>
+                    <td>
+                        @if (category.Subcategories != null && category.Subcategories.Any())
+                        {
+                            <ul class="list-unstyled mb-0">
+                                @foreach (var subcategory in category.Subcategories)
+                                {
+                                    <li>@subcategory.SubCategoryName</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>No subcategories available</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            @if (Session["UserType"].ToString() != "Admin")
+                            {
+                                <a href="@Url.Action("EditCategory", "Category", new { id = category.CategoryID })" class="btn btn-warning btn-sm me-2">Edit</a>
+                            }
+
+                           
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    h2 {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .modal-header {
+        background-color: #FFC107; /* Yellow background */
+        color: #212529; /* Dark text */
+    }
+
+    .btn-info, .btn-warning {
+        color: white;
+    }
+
+    .filter-btn {
+        background-color: #FFC107; /* Yellow background */
+        color: #212529; /* Dark text */
+        border: none;
+    }
+
+        .filter-btn:hover {
+            background-color: #ff9800; /* Slightly darker yellow */
+            color: white;
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .table-bordered th, .table-bordered td {
+        border: 1px solid #dee2e6;
+    }
+
+    .modal-body .form-control {
+        border-color: #ffc107;
+    }
+</style>

@@ -1,0 +1,195 @@
+﻿@using Project.Models
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["Error"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
+<div class="container-fluid hero text-center p-5">
+    <h1 class="display-4 fw-bold">Welcome to Budget Buys</h1>
+    <p class="lead mb-4">Your ultimate marketplace for deadstock and defect stock products at unbeatable prices.</p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p class="mb-4">Welcome back, <strong>@Session["UserName"]</strong>! Explore our latest deals and shop from a variety of exclusive products.</p>
+        <a class="btn btn-light btn-lg shadow" href="@Url.Action("AllCategories", "Product")" role="button">Shop Now</a>
+    }
+    else
+    {
+        <p class="mb-4">Sign up today and enjoy exclusive discounts on high-quality products at low prices.</p>
+        <a class="btn btn-light btn-lg me-2 shadow" href="@Url.Action("Register", "Account")" role="button">Join Now</a>
+        <a class="btn btn-secondary btn-lg shadow" href="@Url.Action("Login", "Account")" role="button">Login</a>
+    }
+</div>
+
+
+
+<!-- About Section -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>About Budget Buys</h2>
+            <p>
+                At Budget Buys, we specialize in offering deadstock and defect stock at reduced prices. These are items that might not meet traditional retail standards due to overproduction, minor defects, or discontinuation. However, they offer excellent value without compromising on quality. We strive to provide our customers with the best deals, helping them save money on high-quality products.
+            </p>
+            <p>
+                Whether you're looking for electronics, fashion, or home appliances, Budget Buyers has something for everyone. Our mission is to connect customers with affordable products while promoting sustainable shopping by reducing waste.
+            </p>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <p>Sign up today and enjoy exclusive discounts on high-quality products at low prices.</p>
+                <a class="btn btn-primary btn-lg" href="@Url.Action("Register", "Account")" role="button">Join Now</a>
+                <a class="btn btn-secondary btn-lg" href="@Url.Action("Login", "Account")" role="button">Login</a>
+            }
+        </div>
+        <div class="col-md-6">
+            <img src="~/lib/images/i1.jpg" class="img-fluid rounded shadow" alt="About Us" />
+        </div>
+    </div>
+</div>
+
+<!-- Why Shop With Us Section -->
+<div class="container my-5">
+    <h2 class="text-center">Why Shop With Us?</h2>
+    <div class="row text-center mt-4">
+        <div class="col-md-4">
+            <i class="fa fa-tags fa-3x mb-3 text-primary"></i>
+            <h4>Unbeatable Prices</h4>
+            <p>Get access to exclusive deals on deadstock and defect products.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="fa fa-leaf fa-3x mb-3 text-success"></i>
+            <h4>Eco-Friendly</h4>
+            <p>Promote sustainable shopping by reducing waste and buying surplus items.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="fa fa-thumbs-up fa-3x mb-3 text-warning"></i>
+            <h4>Quality Products</h4>
+            <p>All items are carefully inspected to ensure quality at affordable prices.</p>
+        </div>
+    </div>
+    <div class="text-center mt-5">
+        <a href="@Url.Action("AllCategories", "Product")" class="btn btn-primary btn-lg">Explore Products</a>
+    </div>
+</div>
+
+
+<!-- Featured Products Section -->
+<div class="container my-5">
+    <h2 class="text-center">Featured Products</h2>
+    <div class="row mt-4">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <a href="@Url.Action("Details", "Product", new { id = product.ProductID })" class="text-decoration-none">
+                    <div class="card shadow-sm">
+                        <!-- Correctly reference the image source -->
+                        <img class="card-img-top" src="~/@Url.Content(product.ProductPhoto)" alt="@product.ProductName" style="width: 100%; height: 200px; object-fit: cover;" />
+                        <div class="card-body">
+                            <h5 class="card-title text-black">@product.ProductName</h5>
+                            <p class="card-text text-truncate text-black">
+                                @product.Description
+                            </p>
+                            <button class="btn btn-primary w-100">View Details</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+
+<style>
+    .text-truncate {
+        max-height: 36px; /* Adjust as per your needs */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Set to 2 lines */
+        -webkit-box-orient: vertical;
+    }
+</style>
+
+
+<!-- Featured Products Section -->
+<!--<div class="container my-5">
+    <h2 class="text-center">Featured Products</h2>
+    <div class="row mt-4">-->
+<!-- Example Product 1 -->
+<!--<div class="col-md-3">
+    <div class="card shadow-sm">
+        <img class="card-img-top" src="~/lib/images/Product/prod4.jpg" alt="Product 1" />
+        <div class="card-body">
+            <h5 class="card-title">Product 1</h5>
+            <p class="card-text">Premium quality at a fraction of the original price.</p>
+            <a href="#" class="btn btn-primary">Buy Now</a>
+        </div>
+    </div>
+</div>-->
+<!-- Example Product 2 -->
+<!--<div class="col-md-3">
+    <div class="card shadow-sm">
+        <img class="card-img-top" src="~/lib/images/Product/prod2.jpg" alt="Product 2" />
+        <div class="card-body">
+            <h5 class="card-title">Product 2</h5>
+            <p class="card-text">A great deal on surplus stock. Limited availability!</p>
+            <a href="#" class="btn btn-primary">Buy Now</a>
+        </div>
+    </div>
+</div>-->
+<!-- Example Product 3 -->
+<!--<div class="col-md-3">
+    <div class="card shadow-sm">
+        <img class="card-img-top" src="~/lib/images/Product/prod3.jpg" alt="Product 3" />
+        <div class="card-body">
+            <h5 class="card-title">Product 3</h5>
+            <p class="card-text">Minor defects, major savings. Grab it before it's gone.</p>
+            <a href="#" class="btn btn-primary">Buy Now</a>
+        </div>
+    </div>
+</div>-->
+<!-- Example Product 4 -->
+<!--<div class="col-md-3">
+            <div class="card shadow-sm">
+                <img class="card-img-top" src="~/lib/images/Product/prod4.jpg" alt="Product 4" />
+                <div class="card-body">
+                    <h5 class="card-title">Product 4</h5>
+                    <p class="card-text">Discontinued, but still top-notch quality.</p>
+                    <a href="#" class="btn btn-primary">Buy Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- Testimonials Section -->
+<div class="container-fluid bg-light p-5">
+    <h2 class="text-center">What Our Customers Say</h2>
+    <div class="row text-center mt-4">
+        <div class="col-md-4">
+            <p><strong>Drashti Shukla</strong></p>
+            <p>"I love shopping at Budget Buyers. Amazing deals, great quality, and fast shipping!"</p>
+        </div>
+        <div class="col-md-4">
+            <p><strong>Anand Rajput</strong></p>
+            <p>"I’ve found so many great products here that I wouldn’t have been able to afford otherwise."</p>
+        </div>
+        <div class="col-md-4">
+            <p><strong>Mayur Thakkar</strong></p>
+            <p>"The best place for eco-friendly shopping. Highly recommended!"</p>
+        </div>
+    </div>
+</div>

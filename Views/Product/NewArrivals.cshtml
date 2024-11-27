@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Project.Models.Product>
+
+<h2 class="text-center my-5">New Arrivals</h2>
+
+<div class="container">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <a href="@Url.Action("Details", "Product", new { id = product.ProductID })" class="text-decoration-none">
+                    <div class="card shadow-sm border-0 product-card">
+                        <img src="~/@Url.Content(product.ProductPhoto)" class="card-img-top" alt="@product.ProductName" style="height: 200px; object-fit: cover;" />
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate text-dark">@product.ProductName</h5>
+                            <p class="card-text text-dark">₹@product.Price</p>
+                            <button class="btn btn-primary w-100">View Details</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    /* Truncate text in card */
+    .text-truncate {
+        max-height: 40px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    /* Hover effect */
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: scale(1.05); /* Slightly scale the card on hover */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Add shadow for emphasis */
+        }
+</style>

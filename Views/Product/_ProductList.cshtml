@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Project.Models.Product>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="container my-5">
+    <!-- Back to Category and Back to Home Buttons with Icons -->
+    <div class="d-flex justify-content-between mb-4">
+        <a href="@Url.Action("AllCategories", "Product")" class="btn btn-secondary">
+            <i class="fa fa-th-list"></i> Back to Categories
+        </a>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">
+            <i class="fa fa-home"></i> Back to Home
+        </a>
+    </div>
+
+    <h1 class="text-center mb-4">Available Products</h1>
+    <div class="row text-center">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var product in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="@Url.Action("Details", "Product", new { id = product.ProductID })" class="card-link">
+                            <!-- Larger product image -->
+                            <img src="~/@Url.Content(product.ProductPhoto)" alt="@product.ProductName" class="card-img-top" />
+
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@product.ProductName</h5>
+                                <p class="card-text">Price: @product.Price</p>
+                                <p class="card-text text-muted">@product.Description</p>
+
+                                <!-- 'View Details' button aligned to bottom -->
+                                <span class="btn btn-primary mt-auto">View Details</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="text-center">No products found for the selected filters.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-img-top {
+        height: 200px; /* Adjust height as needed */
+        object-fit: cover; /* Crop or scale the image to fit the card */
+    }
+
+    .card-body {
+        text-align: left; /* Align text to the left for readability */
+    }
+</style>
+
+

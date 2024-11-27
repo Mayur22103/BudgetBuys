@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Project.Models.Seller>
+@{
+    ViewBag.Title = "Sellers List";
+}
+
+<h2 class="text-center">Sellers List</h2>
+
+<!-- Back to Seller Button -->
+<div class="mb-3">
+    <a href="@Url.Action("Seller", "Admin")" class="btn btn-secondary">Back to Sellers</a>
+</div>
+
+<!-- Table for displaying sellers -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered align-middle text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Seller ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Business Name</th>
+                <th>Created At</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var seller in Model)
+            {
+                <tr>
+                    <td>@seller.SellerID</td>
+                    <td>@seller.FullName</td>
+                    <td>@seller.Email</td>
+                    <td>@seller.PhoneNumber</td>
+                    <td>@seller.BusinessName</td>
+                    <td>@seller.CreatedAt</td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Optional: Custom styling for enhanced design -->
+<style>
+    h2 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .table {
+        background-color: #f9f9f9;
+    }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+    .btn-group .btn {
+        margin-right: 5px;
+    }
+</style>

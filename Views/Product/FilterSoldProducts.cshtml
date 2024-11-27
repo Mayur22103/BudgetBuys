@@ -1,0 +1,55 @@
+﻿@model IEnumerable<dynamic>
+
+<h2 class="d-flex justify-content-between align-items-center">
+    Sold Products
+</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <a href="@Url.Action("SoldProducts", "Product")" class="btn btn-info mb-3">Back To Products</a>
+</div>
+
+<!-- Display Products -->
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning">No Sold Products Found.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No.</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total Price</th>
+                    <th>Order Date</th>
+                    <th>Customer Name</th>
+                    <th>Customer Email</th>
+                    <th>Delivery Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int index = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>₹@item.UnitPrice</td>
+                        <td>₹@item.TotalPrice</td>
+                        <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.CustomerEmail</td>
+                        <td>@item.Status</td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,151 @@
+﻿@model IEnumerable<dynamic>
+
+<h2 class="d-flex justify-content-between align-items-center">
+    Sold Products
+    <!-- Filter Button to open the Modal -->
+</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <a href="@Url.Action("DownloadSoldProductsReport", "Product")" class="btn btn-info mb-3" id="soldReport"><i class="fa fa-download"></i> Download Sold Product Report</a>
+    <!-- Filter Button -->
+    <button class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="fa fa-filter"></i> Filter</button>
+</div>
+
+<!-- Modal for Filtering -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="filterModalLabel">Filter Sold Products</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Filter Form -->
+                <form method="get" action="@Url.Action("FilterSoldProducts", "Product")">
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="productName" value="@ViewBag.ProductName" list="productList" />
+                        <datalist id="productList">
+                            @foreach (var product in Model.Select(p => p.ProductName).Distinct())
+                            {
+                                <option value="@product" />
+                            }
+                        </datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customerName" class="form-label">Customer Name</label>
+                        <input type="text" class="form-control" id="customerName" name="customerName" value="@ViewBag.CustomerName" list="customerList" />
+                        <datalist id="customerList">
+                            @foreach (var customer in Model.Select(c => c.CustomerName).Distinct())
+                            {
+                                <option value="@customer" />
+                            }
+                        </datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Delivery Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">-- Select Status --</option>
+                            <option value="Delivered" @(ViewBag.Status == "Delivered" ? "selected" : "")>Delivered</option>
+                            <option value="Pending" @(ViewBag.Status == "Pending" ? "selected" : "")>Pending</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Display Products -->
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning">No Sold Products Found.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No.</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total Price</th>
+                    <th>Order Date</th>
+                    <th>Customer Name</th>
+                    <th>Customer Email</th>
+                    <th>Delivery Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int index = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>₹@item.UnitPrice</td>
+                        <td>₹@item.TotalPrice</td>
+                        <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.CustomerEmail</td>
+                        <td>@item.Status</td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<!-- Additional Styling for Consistent Layout -->
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table thead {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .modal-header {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+    .modal-title {
+        color: #333;
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    .btn-info, .btn-warning {
+        color: white;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border: none;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+        color: #856404;
+    }
+</style>

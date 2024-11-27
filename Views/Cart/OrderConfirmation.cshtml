@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Order Confirmation";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card border-0 shadow-lg p-4">
+        <h1 class="display-4 text-success">Thank You for Your Order!</h1>
+        <p class="lead">Your order has been successfully placed. We will contact you shortly.</p>
+
+        <div class="mt-4">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">Go to Home Page</a>
+            <a href="@Url.Action("DownloadReceipt", "Cart", new { orderId = Model.OrderId })" class="btn btn-primary btn-lg">
+                <i class="fa fa-download"></i> Download Order Receipt
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Project.Models.Category>
+
+@{
+    ViewBag.Title = "Product Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Prevent default link color and styles */
+    a.card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card {
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+</style>
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Filter Button for Tablet/Mobile -->
+        <div class="col-12 d-md-none mb-3">
+            <button class="btn btn-secondary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse" id="toggleFilterButton">
+                Show Filters
+            </button>
+        </div>
+
+        <!-- Sidebar Column (Filter) -->
+        <div id="filterCollapse" class="col-md-3 collapse d-md-block">
+            <h4>Filter Categories</h4>
+            <form method="get" action="@Url.Action("FilterCategories")" id="filterForm">
+                <div class="form-group">
+                    <label for="priceRange">Price Range:</label>
+                    <input type="number" name="minPrice" placeholder="Min Price" class="form-control" />
+                    <input type="number" name="maxPrice" placeholder="Max Price" class="form-control mt-2" />
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="sort">Sort By:</label>
+                    <select name="sort" class="form-control">
+                        <option value="NameAsc">Name (A-Z)</option>
+                        <option value="NameDesc">Name (Z-A)</option>
+                        <option value="PriceAsc">Price (Low to High)</option>
+                        <option value="PriceDesc">Price (High to Low)</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="categories">Categories:</label>
+                    @foreach (var category in Model)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="categories" value="@category.CategoryID" id="cat_@category.CategoryID">
+                            <label class="form-check-label" for="cat_@category.CategoryID">
+                                @category.CategoryName
+                            </label>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="productCondition">Product Condition:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="productCondition" value="Deadstock" id="condition_deadstock">
+                        <label class="form-check-label" for="condition_deadstock">Deadstock</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="productCondition" value="Minor Defect" id="condition_minor_defect">
+                        <label class="form-check-label" for="condition_minor_defect">Minor Defect</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
+            </form>
+        </div>
+
+        <!-- Main Content (Product Categories) -->
+        <div class="col-md-9">
+            <h1 class="text-center mb-4">Explore Our Product Categories</h1>
+            <div class="row text-center">
+                @foreach (var category in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <a href="@Url.Action("Categories", new { category = category.CategoryID })" class="card-link">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">@category.CategoryName</h5>
+                                    <p class="card-text">Browse our selection of products in the @category.CategoryName category.</p>
+                                    <span class="btn btn-primary mt-auto">View @category.CategoryName</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterForm = document.getElementById("filterForm");
+        const filterCollapse = document.getElementById("filterCollapse");
+
+        // Event listener for when the collapse section is hidden
+        filterCollapse.addEventListener('hide.bs.collapse', function () {
+            // Reset the form fields when filters are hidden
+            filterForm.reset();
+        });
+    });
+</script>

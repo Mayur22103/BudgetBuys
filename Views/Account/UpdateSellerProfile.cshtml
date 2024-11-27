@@ -1,0 +1,63 @@
+﻿@model Project.Models.Seller
+@{
+    ViewBag.Title = "UpdateSellerProfile";
+}
+
+<h2 class="text-center my-5">Update Profile</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script type="text/javascript">
+        alert('@TempData["SuccessMessage"]');
+    </script>
+}
+
+<div class="container d-flex justify-content-center">
+    <div class="card shadow-lg" style="width: 30rem; background-color: #f7f7f7; padding: 20px;">
+        <div class="card-body">
+            @using (Html.BeginForm("UpdateSellerProfile", "Account", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.SellerID)
+
+                <!-- Full Name -->
+                <div class="form-group mb-4">
+                    @Html.LabelFor(m => m.FullName, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", placeholder = "Enter your full name" })
+                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Email -->
+                <div class="form-group mb-4">
+                    @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email address" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group mb-4">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Enter your phone number" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Address -->
+                <div class="form-group mb-4">
+                    @Html.LabelFor(m => m.Address, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Enter your address" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Business Name -->
+                <div class="form-group mb-4">
+                    @Html.LabelFor(m => m.BusinessName, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.BusinessName, new { @class = "form-control", placeholder = "Enter your business name" })
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-success btn-block mt-3">Update Profile</button>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3">Back to Home Page</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

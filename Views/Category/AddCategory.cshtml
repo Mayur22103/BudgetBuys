@@ -1,0 +1,56 @@
+﻿
+
+@{
+    ViewBag.Title = "Add Category and Subcategories";
+}
+
+<div class="d-flex justify-content-center" style="padding-top: 30px; padding-bottom: 30px;">
+    <div class="card shadow-lg" style="width: 30rem; background-color: #f7f7f7; padding: 20px;">
+        <div class="card-body">
+            <h2 class="card-title text-center">Add Category & Subcategories</h2>
+
+            @using (Html.BeginForm("AddCategoryAndSubcategories", "Category", FormMethod.Post))
+            {
+                <!-- Category Name -->
+                <div class="form-group mb-4">
+                    @Html.Label("CategoryName", "Category Name", new { @class = "form-label" })
+                    @Html.TextBox("CategoryName", null, new { @class = "form-control form-control-lg", placeholder = "Category Name" })
+                </div>
+
+                <!-- Subcategory Names -->
+                <div class="form-group mb-4" id="subcategoryContainer">
+                    @Html.Label("SubCategoryNames", "Subcategory Names", new { @class = "form-label" })
+                    <div class="input-group mb-2">
+                        @Html.TextBox("SubCategoryNames[0]", null, new { @class = "form-control", placeholder = "Subcategory Name" })
+                        <button type="button" class="btn btn-outline-secondary" id="addSubcategory">Add More</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-block mt-3">Add Category and Subcategories</button>
+            }
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        var subcategoryIndex = 1;
+
+        document.getElementById('addSubcategory').addEventListener('click', function() {
+            var container = document.getElementById('subcategoryContainer');
+            var newInputGroup = document.createElement('div');
+            newInputGroup.classList.add('input-group', 'mb-2');
+
+            var newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'SubCategoryNames[' + subcategoryIndex + ']';
+            newInput.classList.add('form-control');
+            newInput.placeholder = 'Subcategory Name';
+
+            newInputGroup.appendChild(newInput);
+            container.appendChild(newInputGroup);
+
+            subcategoryIndex++;
+        });
+    </script>
+
